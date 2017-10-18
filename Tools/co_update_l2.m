@@ -20,6 +20,7 @@ switch z
             ngradf(i) = norm(gradf(:,i));
         end    
         [~,i] = max(abs(ngradf));
+        
 %     case 1 %GS-s rule
         
     case 2 %GS-r rule
@@ -32,10 +33,5 @@ switch z
             ndiff(i) = norm(diff(:,i));
         end
         [~,i] = max(ndiff);
-%         
-%     case 3 %GS-q rule
-%         
-%         Li = ;
-%         f(x)+Ai'(Ai*xhat+Abar*xbar*d+Li/2*d^2+g(xhat+d)-g(xhat);
 end
 end
