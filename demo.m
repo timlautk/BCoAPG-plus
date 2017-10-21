@@ -17,6 +17,9 @@ rng(seed);
 
 %% Lasso, min 1/(2*n)*norm(A*x-b)^2+lambda*norm(x,1)
 lambda_l1 = 1;
+beta_l1 = 0.9;
+t_l1 = 0.9;
+s_l1 = 5;
 fun_l1 = @(x) 1/(2*n)*norm(A*x-b,2)^2+lambda_l1*norm(x,1); % objective function
 niter_l1 = 400; % number of iterations for Lasso
 
@@ -26,34 +29,39 @@ val_apg_l1 = apg(A,b,lambda_l1,eta,niter_l1,fun_l1,@l1_prox);
 disp('APGnc:')
 val_apgnc_l1 = apgnc(A,b,lambda_l1,eta,niter_l1,fun_l1,@l1_prox);
 disp('APGnc+:')
-val_apgncp_l1 = apgncp(A,b,lambda_l1,eta,0.9,0.9,niter_l1,fun_l1,@l1_prox);
+val_apgncp_l1 = apgncp(A,b,lambda_l1,eta,beta_l1,t_l1,niter_l1,fun_l1,@l1_prox);
 disp('randomized BPL:')
-val_bpl_l1 = bpl(A,b,lambda_l1,5,niter_l1,fun_l1,@l1_prox);
+val_bpl_l1 = bpl(A,b,lambda_l1,s_l1,niter_l1,fun_l1,@l1_prox);
 disp('randomized BCoAPGnc+:')
-val_ranbcapgncp_l1 = bcapgncp(A,b,lambda_l1,5,0.9,0.9,niter_l1,fun_l1,@l1_prox,1,@co_update_l1);
+val_ranbcapgncp_l1 = bcapgncp(A,b,lambda_l1,s_l1,beta_l1,t_l1,niter_l1,fun_l1,@l1_prox,1,@co_update_l1);
 disp('GS-r BCoAPGnc+:')
-val_bcapgncp_l1 = bcapgncp(A,b,lambda_l1,5,0.9,0.9,niter_l1,fun_l1,@l1_prox,2,@co_update_l1);
+val_bcapgncp_l1 = bcapgncp(A,b,lambda_l1,s_l1,beta_l1,t_l1,niter_l1,fun_l1,@l1_prox,2,@co_update_l1);
 
 
 %% Grouped Lasso, min 1/(2*n)*norm(A*x-b)^2+lambda*norm(x)
 lambda_l1l2 = 1;
-s = 5;
-N = n/s;
+s_l1l2 = 5;
+N = n/s_l1l2;
+beta_l1l2 = 0.8;
+t_l1l2 = 0.2;
 fun_l1l2 = @(x) 1/(2*n)*norm(A*x-b,2)^2+lambda_l1l2*(norm(x(1:N),2)+norm(x(N+1:2*N),2)+norm(x(2*N+1:3*N),2)+norm(x(3*N+1:4*N),2)+norm(x(4*N+1:end),2));
 niter_l1l2 = 300; % number of iterations for grouped Lasso
 
 disp('Grouped Lasso fitting')
 disp('randomized BPL:')
-val_bpl_l1l2 = bpl_l1l2(A,b,lambda_l1l2,s,niter_l1l2,fun_l1l2);
+val_bpl_l1l2 = bpl_l1l2(A,b,lambda_l1l2,s_l1l2,niter_l1l2,fun_l1l2);
 disp('randomized BCoAPGnc+:')
-val_ranbcapgncp_l1l2 = bcapgncp_l1l2(A,b,lambda_l1l2,s,0.8,0.2,niter_l1l2,fun_l1l2,1);
+val_ranbcapgncp_l1l2 = bcapgncp_l1l2(A,b,lambda_l1l2,s_l1l2,beta_l1l2,t_l1l2,niter_l1l2,fun_l1l2,1); % last arg: 1 = random update; 2 = GS-r update
 disp('GS-r BCoAPGnc+:')
-val_bcapgncp_l1l2 = bcapgncp_l1l2(A,b,lambda_l1l2,s,0.8,0.2,niter_l1l2,fun_l1l2,2);
+val_bcapgncp_l1l2 = bcapgncp_l1l2(A,b,lambda_l1l2,s_l1l2,beta_l1l2,t_l1l2,niter_l1l2,fun_l1l2,2);
 
 
 %% Capped l1-regularized least squares, min 1/(2*n)*norm(A*x-b)^2+lambda*sum(min(abs(x),theta))
 lambda_cappedl1 = 0.0001;
 theta_cappedl1 = 0.1*lambda_cappedl1;
+beta_cappedl1 = 0.8;
+t_cappedl1 = 0.2;
+s_cappedl1 = 10;
 fun_cappedl1 = @(x) 1/(2*n)*norm(A*x-b,2)^2+lambda_cappedl1*sum(min(abs(x),theta_cappedl1));
 niter_cappedl1 = 600;
 
@@ -63,13 +71,13 @@ val_apg_cappedl1 = apg(A,b,lambda_cappedl1,eta,niter_cappedl1,fun_cappedl1,@cap_
 disp('APGnc:')
 val_apgnc_cappedl1 = apgnc(A,b,lambda_cappedl1,eta,niter_cappedl1,fun_cappedl1,@cap_l1_prox,theta_cappedl1);
 disp('APGnc+:')
-val_apgncp_cappedl1 = apgncp(A,b,lambda_cappedl1,eta,0.8,0.2,niter_cappedl1,fun_cappedl1,@cap_l1_prox,theta_cappedl1);
+val_apgncp_cappedl1 = apgncp(A,b,lambda_cappedl1,eta,beta_cappedl1,t_cappedl1,niter_cappedl1,fun_cappedl1,@cap_l1_prox,theta_cappedl1);
 disp('BPL:')
-val_bpl_cappedl1 = bpl(A,b,lambda_cappedl1,10,niter_cappedl1,fun_cappedl1,@cap_l1_prox,theta_cappedl1);
+val_bpl_cappedl1 = bpl(A,b,lambda_cappedl1,s_cappedl1,niter_cappedl1,fun_cappedl1,@cap_l1_prox,theta_cappedl1);
 disp('randomized BCoAPGnc+:')
-val_ranbcapgncp_cappedl1 = bcapgncp(A,b,lambda_cappedl1,10,0.8,0.2,niter_cappedl1,fun_cappedl1,@cap_l1_prox,1,@co_update_capped_l1,theta_cappedl1);
+val_ranbcapgncp_cappedl1 = bcapgncp(A,b,lambda_cappedl1,s_cappedl1,beta_cappedl1,t_cappedl1,niter_cappedl1,fun_cappedl1,@cap_l1_prox,1,@co_update_capped_l1,theta_cappedl1);
 disp('GS-r BCoAPGnc+:')
-val_bcapgncp_cappedl1 = bcapgncp(A,b,lambda_cappedl1,10,0.8,0.2,niter_cappedl1,fun_cappedl1,@cap_l1_prox,2,@co_update_capped_l1,theta_cappedl1);
+val_bcapgncp_cappedl1 = bcapgncp(A,b,lambda_cappedl1,s_cappedl1,beta_cappedl1,t_cappedl1,niter_cappedl1,fun_cappedl1,@cap_l1_prox,2,@co_update_capped_l1,theta_cappedl1);
 
 
 %% Nonconvex Regression (SCAD)
@@ -78,6 +86,9 @@ val_bcapgncp_cappedl1 = bcapgncp(A,b,lambda_cappedl1,10,0.8,0.2,niter_cappedl1,f
 lambda_scad = 0.0001;
 gamma_scad = 3;
 niter_scad = 25;
+beta_scad = 0.8;
+t_scad = 0.2;
+s_scad = 10;
 
 disp('SCAD-regularized least square fitting')
 disp('APG:')
@@ -85,13 +96,13 @@ val_apg_scad = apg_scad(A_scad,b_scad,lambda_scad,eta_scad,niter_scad,gamma_scad
 disp('APGnc:')
 val_apgnc_scad = apgnc_scad(A_scad,b_scad,lambda_scad,eta_scad,niter_scad,gamma_scad);
 disp('APGnc+:')
-val_apgncp_scad = apgncp_scad(A_scad,b_scad,lambda_scad,eta_scad,0.8,0.2,niter_scad,gamma_scad);
+val_apgncp_scad = apgncp_scad(A_scad,b_scad,lambda_scad,eta_scad,beta_scad,t_scad,niter_scad,gamma_scad);
 disp('BPL:')
-val_bpl_scad = bpl_scad(A_scad,b_scad,lambda_scad,10,niter_scad,gamma_scad);
+val_bpl_scad = bpl_scad(A_scad,b_scad,lambda_scad,s_scad,niter_scad,gamma_scad);
 disp('randomized BCoAPGnc+:')
-val_ranbcapgncp_scad = bcapgncp_scad(A_scad,b_scad,lambda_scad,10,0.8,0.2,niter_scad,1,gamma_scad);
+val_ranbcapgncp_scad = bcapgncp_scad(A_scad,b_scad,lambda_scad,s_scad,beta_scad,t_scad,niter_scad,1,gamma_scad);
 disp('GS-r BCoAPGnc+:')
-val_bcapgncp_scad = bcapgncp_scad(A_scad,b_scad,lambda_scad,10,0.8,0.2,niter_scad,2,gamma_scad);
+val_bcapgncp_scad = bcapgncp_scad(A_scad,b_scad,lambda_scad,s_scad,beta_scad,t_scad,niter_scad,2,gamma_scad);
 
 
 %% Plot the results (Objective value - Optimal Value vs no. of iterations)
