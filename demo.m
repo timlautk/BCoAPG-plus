@@ -112,7 +112,7 @@ figure(1);
 graph1 = semilogy(iter_l1,val_apg_l1-645.314,'-k',iter_l1,val_apgnc_l1-645.314,'--m',iter_l1,val_apgncp_l1-645.314,'-g',iter_l1,val_bpl_l1-645.314,'r',iter_l1,val_ranbcapgncp_l1-645.314,'--',iter_l1,val_bcapgncp_l1-645.314,'-b');
 set(graph1,'LineWidth',1.5);
 legend('APG','APGnc','APGnc^+','BPL (randomized)','BCoAPGnc^+ (randomized)','BCoAPGnc^+ (GS-r)','interpreter','latex');
-ylabel('Objective value - Optimal value','interpreter','latex')
+% ylabel('Objective value - Optimal value','interpreter','latex')
 xlabel('Number of iterations','interpreter','latex')
 title('$\ell_1$-regularized Sparse Least Squares','interpreter','latex')
 
@@ -123,6 +123,7 @@ figure(2);
 graph2 = semilogy(iter_l1l2,val_bpl_l1l2-65.0197,'r',iter_l1l2,val_ranbcapgncp_l1l2-65.0197,'--',iter_l1l2,val_bcapgncp_l1l2-65.0197,'-b');
 set(graph2,'LineWidth',1.5);
 legend('BPL (randomized)','BCoAPGnc^+ (randomized)','BCoAPGnc^+ (GS-r)','interpreter','latex');
+% ylabel('Objective value - Optimal value','interpreter','latex')
 xlabel('Number of iterations','interpreter','latex')
 title('$\ell_1/\ell_2$-regularized Sparse Least Squares','interpreter','latex')
 
@@ -133,7 +134,7 @@ figure(3);
 graph3 = semilogy(iter_cappedl1,val_apg_cappedl1-2.8378e-4,'.-k',iter_cappedl1,val_apgnc_cappedl1-2.8378e-4,'--m',iter_cappedl1,val_apgncp_cappedl1-2.8378e-4,'-g',iter_cappedl1,val_bpl_cappedl1-2.8378e-4,'r',iter_cappedl1,val_ranbcapgncp_cappedl1-2.8378e-4,'--',iter_cappedl1,val_bcapgncp_cappedl1-2.8378e-4,'-b');
 set(graph3,'LineWidth',1.5);
 legend('APG','APGnc','APGnc^+','BPL (randomized)','BCoAPGnc^+ (randomized)','BCoAPGnc^+ (GS-r)','interpreter','latex');
-ylabel('Objective value - Optimal value','interpreter','latex')
+% ylabel('Objective value - Optimal value','interpreter','latex')
 xlabel('Number of iterations','interpreter','latex')
 title('Capped $\ell_1$-regularized Sparse Least Squares','interpreter','latex')
 
@@ -144,7 +145,7 @@ figure(4);
 graph4 = semilogy(iter_scad,val_apg_scad-8.412e-5,'-k',iter_scad,val_apgnc_scad-8.412e-5,'--m',iter_scad,val_apgncp_scad-8.412e-5,'-g',iter_scad,val_bpl_scad-8.412e-5,'r',iter_scad,val_ranbcapgncp_scad-8.412e-5,'--',iter_scad,val_bcapgncp_scad-8.412e-5,'-b');
 set(graph4,'LineWidth',1.5);
 legend('APG','APGnc','APGnc^+','BPL (randomized)','BCoAPGnc^+ (randomized)','BCoAPGnc^+ (GS-r)','interpreter','latex');
-ylabel('Objective value - Optimal value','interpreter','latex')
+% ylabel('Objective value - Optimal value','interpreter','latex')
 xlabel('Number of iterations','interpreter','latex')
 title('Least Squares with SCAD penalty','interpreter','latex')
 
