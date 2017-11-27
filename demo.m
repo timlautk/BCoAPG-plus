@@ -1,4 +1,3 @@
-% min 1/(2*n)*norm(A*x-b)^2+lambda*norm(x,1)
 clear all
 close all
 clc
